@@ -74,11 +74,16 @@ class Sha1Hash(object):
     def __init__(self):
         # Initial digest variables
         self._h = (
-            0x67452301,
-            0xEFCDAB89,
-            0x98BADCFE,
-            0x10325476,
-            0xC3D2E1F0,
+            0xe384efad,
+            0xf26767a6,
+            0x13162142,
+            0xb5ef0efb,
+            0xb9d7659a,
+            # 0x67452301,
+            # 0xEFCDAB89,
+            # 0x98BADCFE,
+            # 0x10325476,
+            # 0xC3D2E1F0,
         )
 
         # bytes object with 0 <= len < 64 used to store the end of the message
@@ -122,9 +127,15 @@ class Sha1Hash(object):
 
     def _produce_digest(self):
         """Return finalized digest variables for the data processed so far."""
+        key_len = 16
+        m1_p1_l1_len = 112
+
         # Pre-processing:
         message = self._unprocessed
         message_byte_length = self._message_byte_length + len(message)
+        message_byte_length += key_len + m1_p1_l1_len
+        print(f'key_len + m1_p1_l1_len: {key_len + m1_p1_l1_len}')
+        print(f'len(message_byte_length): {message_byte_length}')
 
         # append the bit '1' to the message
         message += b'\x80'
@@ -135,12 +146,18 @@ class Sha1Hash(object):
 
         # append length of message (before pre-processing), in bits, as 64-bit big-endian integer
         message_bit_length = message_byte_length * 8
+        print(f'message_bit_length: {message_bit_length}')
+        print(f'hex(message_bit_length): {hex(message_bit_length)}')
 
         message += struct.pack(b'>Q', message_bit_length)
+
+        print(f'message: {message}')
+        print(f'len(message)S: {len(message)}')
 
         # Process the final chunk
         # At this point, the length of the message is either 64 or 128 bytes.
         print(f"message: {message}")
+        print(f"len(message): {len(message)}")
         h = _process_chunk(message[:64], *self._h)
         if len(message) == 64:
             print("message length was 64 and we're done")
@@ -149,13 +166,12 @@ class Sha1Hash(object):
 
 def get_m1_p1_l1(message):
     """Return finalized digest variables for the data processed so far."""
+    key_len = 16
     # Pre-processing:
-    message_byte_length = len(message)
+    message_byte_length = len(message) + key_len
     print(f'message_byte_length: {message_byte_length}')
     print(f'type(message): {type(message)}')
     print(f'message: {message}')
-
-
 
     # append the bit '1' to the message
     message += b'\x80'
@@ -167,6 +183,8 @@ def get_m1_p1_l1(message):
     print(f'message with padding and before l1: {message}')
 
     # append length of message (before pre-processing), in bits, as 64-bit big-endian integer
+    # message_byte_length += key_len
+    print(f'message_byte_length withs key: {message_byte_length}')
     message_bit_length = message_byte_length * 8
     print(f'message_bit_length: {message_bit_length}')
     print(f'message_bit_length: (hex){hex(message_bit_length)}')
@@ -182,6 +200,7 @@ def get_m1_p1_l1(message):
     # Process the final chunk
     # At this point, the length of the message is either 64 or 128 bytes.
     print(f"final message: {message}")
+    print(f"final message len: {len(message)}")
     return message
 
 
