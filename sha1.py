@@ -73,7 +73,7 @@ class Sha1Hash(object):
 
     def __init__(self):
         # Initial digest variables
-        self._h = (
+        self._h = (  # Mac of original message from Alice: e384efadf26767a613162142b5ef0efbb9d7659a
             0xe384efad,
             0xf26767a6,
             0x13162142,
