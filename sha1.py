@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# From https://github.com/ajalt/python-sha1 with MIT license
 from __future__ import print_function
 import struct
 import io
