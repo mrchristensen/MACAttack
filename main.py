@@ -1,9 +1,5 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-# import python-sha1-master/sha1.py
 import sha1
+import struct
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -13,6 +9,18 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    original_message = "No one has completed lab 2 so give them all a 0"
+    original_hash = sha1.sha1(bytes(original_message, encoding='utf8'))
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    m1_p1_l1 = sha1.get_m1_p1_l1(str.encode(original_message))
+    print(f'type(m1_p1_l1) {type(m1_p1_l1)}')
+
+    extension = ", except Matt Christensen. He gets 100%"
+    m1_p1_l1_extension = m1_p1_l1 + str.encode(extension)
+
+    print(f'm1_p1_l1_extension: {m1_p1_l1_extension}')
+    print(f'm1_p1_l1_extension: (hex) {m1_p1_l1_extension.hex()}')
+
+    # print(''.join('{:02x}'.format(x) for x in m1_p1_l1_extension.encode('ascii')))
+    # print(f'og_hash: {original_hash}')
+    # print_hi('PyCharm')
