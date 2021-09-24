@@ -13,15 +13,15 @@ if __name__ == '__main__':
     # original_hash = sha1.sha1(bytes(original_message, encoding='utf8'))
 
     m1_p1_l1 = sha1.get_m1_p1_l1(str.encode(original_message))
-    print(f'type(m1_p1_l1) {type(m1_p1_l1)}')
-    print(f'm1_p1_l1: {m1_p1_l1}')
-    print(f'len(m1_p1_l1): {len(m1_p1_l1)}')
+    # print(f'type(m1_p1_l1) {type(m1_p1_l1)}')
+    # print(f'm1_p1_l1: {m1_p1_l1}')
+    # print(f'len(m1_p1_l1): {len(m1_p1_l1)}')
 
     extension = ", except Matt Christensen. He gets 100%"
     m1_p1_l1_extension = m1_p1_l1 + str.encode(extension)
 
-    print(f'm1_p1_l1_extension: {m1_p1_l1_extension}')
-    print(f'm1_p1_l1_extension: (hex) {m1_p1_l1_extension.hex()}')
+    print(f'Modified message (m1_p1_l1_extension): {m1_p1_l1_extension}')
+    print(f'Modified message (m1_p1_l1_extension): (hex) {m1_p1_l1_extension.hex()}')
 
     new_mac = sha1.sha1(str.encode(extension))
     print(f'new_mac: {new_mac}')

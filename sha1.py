@@ -108,13 +108,13 @@ class Sha1Hash(object):
 
         # Read the rest of the data, 64 bytes at a time
         while len(chunk) == 64:
-            print(f'chunk: {chunk}')
+            # print(f'chunk: {chunk}')
             self._h = _process_chunk(chunk, *self._h)
             self._message_byte_length += 64
             chunk = arg.read(64)
 
         self._unprocessed = chunk
-        print(f'self._unprocessed = chunk: {self._unprocessed}')
+        # print(f'self._unprocessed = chunk: {self._unprocessed}')
         return self
 
     def digest(self):
@@ -128,14 +128,14 @@ class Sha1Hash(object):
     def _produce_digest(self):
         """Return finalized digest variables for the data processed so far."""
         key_len = 16
-        m1_p1_l1_len = 112
+        m1_p1_l1_len = 112  # todo: don't make this a magic number
 
         # Pre-processing:
         message = self._unprocessed
         message_byte_length = self._message_byte_length + len(message)
         message_byte_length += key_len + m1_p1_l1_len
-        print(f'key_len + m1_p1_l1_len: {key_len + m1_p1_l1_len}')
-        print(f'len(message_byte_length): {message_byte_length}')
+        # print(f'key_len + m1_p1_l1_len: {key_len + m1_p1_l1_len}')
+        # print(f'len(message_byte_length): {message_byte_length}')
 
         # append the bit '1' to the message
         message += b'\x80'
@@ -146,21 +146,21 @@ class Sha1Hash(object):
 
         # append length of message (before pre-processing), in bits, as 64-bit big-endian integer
         message_bit_length = message_byte_length * 8
-        print(f'message_bit_length: {message_bit_length}')
-        print(f'hex(message_bit_length): {hex(message_bit_length)}')
+        # print(f'message_bit_length: {message_bit_length}')
+        # print(f'hex(message_bit_length): {hex(message_bit_length)}')
 
         message += struct.pack(b'>Q', message_bit_length)
 
-        print(f'message: {message}')
-        print(f'len(message)S: {len(message)}')
+        # print(f'message: {message}')
+        # print(f'len(message)S: {len(message)}')
 
         # Process the final chunk
         # At this point, the length of the message is either 64 or 128 bytes.
-        print(f"message: {message}")
-        print(f"len(message): {len(message)}")
+        # print(f"message: {message}")
+        # print(f"len(message): {len(message)}")
         h = _process_chunk(message[:64], *self._h)
         if len(message) == 64:
-            print("message length was 64 and we're done")
+            # print("message length was 64 and we're done")
             return h
         return _process_chunk(message[64:], *h)
 
@@ -169,9 +169,9 @@ def get_m1_p1_l1(message):
     key_len = 16
     # Pre-processing:
     message_byte_length = len(message) + key_len
-    print(f'message_byte_length: {message_byte_length}')
-    print(f'type(message): {type(message)}')
-    print(f'message: {message}')
+    # print(f'message_byte_length: {message_byte_length}')
+    # print(f'type(message): {type(message)}')
+    # print(f'message: {message}')
 
     # append the bit '1' to the message
     message += b'\x80'
@@ -180,14 +180,14 @@ def get_m1_p1_l1(message):
     # is congruent to 56 (mod 64)
     message += b'\x00' * ((56 - (message_byte_length + 1) % 64) % 64)
 
-    print(f'message with padding and before l1: {message}')
+    # print(f'message with padding and before l1: {message}')
 
     # append length of message (before pre-processing), in bits, as 64-bit big-endian integer
     # message_byte_length += key_len
-    print(f'message_byte_length withs key: {message_byte_length}')
+    # print(f'message_byte_length withs key: {message_byte_length}')
     message_bit_length = message_byte_length * 8
-    print(f'message_bit_length: {message_bit_length}')
-    print(f'message_bit_length: (hex){hex(message_bit_length)}')
+    # print(f'message_bit_length: {message_bit_length}')
+    # print(f'message_bit_length: (hex){hex(message_bit_length)}')
     # message += b'\x00\x00\x00\x00\x00\x00\x01\x78'
     # l1 = b'\x00\x00\x00\x00\x00\x00\x01\x78'
     # print(f"int.from_bytes(l1): {int.from_bytes(l1, 'big')}")
@@ -195,12 +195,12 @@ def get_m1_p1_l1(message):
     # stuck_thing = struct.pack(b'>Q', message_bit_length)
     # print(f"stuck.pack thing: {stuck_thing}")
 
-    print(f'len(message): {len(message)}')
+    # print(f'len(message): {len(message)}')
 
     # Process the final chunk
     # At this point, the length of the message is either 64 or 128 bytes.
-    print(f"final message: {message}")
-    print(f"final message len: {len(message)}")
+    # print(f"final message: {message}")
+    # print(f"final message len: {len(message)}")
     return message
 
 
